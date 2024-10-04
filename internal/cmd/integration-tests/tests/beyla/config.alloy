@@ -1,6 +1,10 @@
 beyla.ebpf "default" {
   open_port = "8443"
   debug = true
+  executable_name = "otel-metrics-gen"
+  metrics {
+    features = ["application_process"]
+  }
 }
 
 prometheus.scrape "beyla" {
@@ -11,7 +15,7 @@ prometheus.scrape "beyla" {
 
 prometheus.remote_write "beyla" {
   endpoint {
-    url = "http://localhost:9009/api/v1/push"
+    url = "http://mimir:9009/api/v1/push"
     queue_config {
       max_samples_per_send = 100
     }
